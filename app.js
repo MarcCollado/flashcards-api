@@ -4,6 +4,17 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const createError = require('http-errors');
 
+// graphQL
+const graphqlHTTP = require('express-graphql');
+const { schema } = require('./api/schema');
+
+// The root provides a resolver function for each API endpoint
+var root = {
+  hello: () => {
+    return 'Hello world!';
+  },
+};
+
 // mongoose
 const mongoose = require('mongoose');
 // config file to set db paths
@@ -11,9 +22,6 @@ const { dbUrl, dbPort, dbName, sessionSecret } = require('./config');
 // connect to the database using mongoose
 mongoose.connect(`mongodb://${dbUrl}:${dbPort}/${dbName}`);
 mongoose.Promise = global.Promise;
-
-// require all the routes
-const index = require('./routes/index.js');
 
 // express
 const app = express();
@@ -26,7 +34,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // routes
-app.use('/', index);
+app.use(
+  '/graphql',
+  graphqlHTTP((req) => ({
+    schema: schema,
+    rootValue: root,
+    graphiql: true,
+  })),
+);
+
+app.listen(4000);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

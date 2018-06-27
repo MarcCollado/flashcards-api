@@ -9,25 +9,54 @@ const {
   GraphQLInt,
 } = require('graphql');
 
-const { getDecks } = require('./resolvers/decks');
+const { getDecks, createDeck } = require('./resolvers/decks');
+
+const QuizType = new GraphQLObjectType({
+  name: 'Quiz',
+  fields: {
+    // is this needed ?
+    id: { type: GraphQLNonNull(GraphQLID) },
+    question: { type: GraphQLNonNull(GraphQLString) },
+    answer: { type: GraphQLNonNull(GraphQLString) },
+  },
+});
 
 const DeckType = new GraphQLObjectType({
   name: 'Deck',
   fields: {
-    id: { type: GraphQLID },
-    title: { type: GraphQLString },
-    coverImageUrl: { type: GraphQLString },
+    id: { type: GraphQLNonNull(GraphQLID) },
+    title: { type: GraphQLNonNull(GraphQLString) },
+    coverImageUrl: { type: GraphQLNonNull(GraphQLString) },
+    quiz: { type: GraphQLList(QuizType) },
   },
 });
 
-const QueryType = new GraphQLObjectType({
-  name: 'QueryType',
+const DeckInputType = new GraphQLInputObjectType({
+  name: 'DeckInput',
+  fields: {
+    title: { type: new GraphQLNonNull(GraphQLString) },
+    coverImageUrl: { type: new GraphQLNonNull(GraphQLString) },
+    // quiz: {}
+  },
+});
+
+const Queries = new GraphQLObjectType({
+  name: 'Queries',
   description: 'The root Query type',
   fields: {
     hello: {
-      type: new GraphQLNonNull(GraphQLString),
+      type: GraphQLNonNull(GraphQLString),
       resolve(_, args) {
-        return 'Hello world!';
+        return 'Hello world';
+      },
+    },
+    deck: {
+      type: DeckType,
+      args: {
+        id: { type: GraphQLNonNull(GraphQLID) },
+      },
+      resolve(_, args) {
+        return getDeck(args.id);
       },
     },
     decks: {
@@ -36,39 +65,30 @@ const QueryType = new GraphQLObjectType({
         return getDecks();
       },
     },
-    // deck: {
-    //   type: PlayerType,
-    //   args: {
-    //     id: { type: GraphQLNonNull(GraphQLID) }
-    //   },
-    //   resolve(_, args) {
-    //     return getDeck(args.id);
-    //   }
-    // }
   },
 });
 
-// const MutationType = new GraphQLObjectType({
-//   name: 'Mutation',
-//   description: 'The root Mutation type',
-//   fields: {
-//     createPlayer: {
-//       type: PlayerType,
-//       args: {
-//         player: { type: new GraphQLNonNull(PlayerInputType) }
-//       },
-//       resolve(_, args) {
-//         console.log(args);
-//         return createPlayer(args.player);
-//       }
-//     }
-//   },
-// });
-
-const schema = new GraphQLSchema({
-  query: QueryType,
-  // mutation: MutationType,
+const Mutations = new GraphQLObjectType({
+  name: 'Mutations',
+  description: 'The root Mutation type',
+  fields: {
+    createDeck: {
+      type: GraphQLNonNull(DeckType),
+      args: {
+        deck: { type: new GraphQLNonNull(DeckInputType) },
+      },
+      resolve(_, args) {
+        return createDeck(args.deck);
+      },
+    },
+  },
 });
 
+const schema = new GraphQLSchema({
+  query: Queries,
+  mutation: Mutations,
+});
+
+// why export this one?
 exports.types = { DeckType };
 exports.schema = schema;

@@ -1,9 +1,10 @@
+// check dotenv docs
+require('./config/db.js');
 const express = require('express');
 const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const createError = require('http-errors');
-
 // graphQL
 const graphqlHTTP = require('express-graphql');
 const { schema } = require('./api/schema');
@@ -15,21 +16,12 @@ var root = {
   },
 };
 
-// mongoose
-const mongoose = require('mongoose');
-// config file to set db paths
-const { dbUrl, dbPort, dbName, sessionSecret } = require('./config');
-// connect to the database using mongoose
-mongoose.connect(`mongodb://${dbUrl}:${dbPort}/${dbName}`);
-mongoose.Promise = global.Promise;
-
 // express
 const app = express();
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

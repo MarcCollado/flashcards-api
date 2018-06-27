@@ -1,39 +1,35 @@
-// check dotenv docs
 require('./config/db.js');
 const express = require('express');
-const path = require('path');
 const logger = require('morgan');
-const cookieParser = require('cookie-parser');
 const createError = require('http-errors');
-// graphQL
+// GraphQL
 const graphqlHTTP = require('express-graphql');
 const { schema } = require('./api/schema');
-// express
+// Express
 const app = express();
+app.get('/favicon.ico', (req, res) => res.status(204));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
-// routes
 app.use(
   '/graphql',
   graphqlHTTP((req) => ({
-    schema: schema,
-    graphiql: true, // process.env.NODE_ENV === 'development',
+    schema,
+    graphiql: true,
+    // process.env.NODE_ENV === 'development',
   })),
 );
 
 app.listen(4000);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

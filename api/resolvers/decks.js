@@ -29,12 +29,10 @@ async function createDeck(args) {
       title,
       coverImageUrl,
     };
-
     Decks.create(newDeck, (err, createdDeck) => {
       if (err) {
         throw new Error(`Error creating the deck ${name}`);
       }
-
       return resolve(createdDeck);
     });
   });

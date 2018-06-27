@@ -9,12 +9,11 @@ const {
   GraphQLInt,
 } = require('graphql');
 
-const { getDecks, createDeck } = require('./resolvers/decks');
+const { getDeck, getDecks, createDeck } = require('./resolvers/decks');
 
 const QuizType = new GraphQLObjectType({
   name: 'Quiz',
   fields: {
-    // is this needed ?
     id: { type: GraphQLNonNull(GraphQLID) },
     question: { type: GraphQLNonNull(GraphQLString) },
     answer: { type: GraphQLNonNull(GraphQLString) },
@@ -36,7 +35,6 @@ const DeckInputType = new GraphQLInputObjectType({
   fields: {
     title: { type: new GraphQLNonNull(GraphQLString) },
     coverImageUrl: { type: new GraphQLNonNull(GraphQLString) },
-    // quiz: {}
   },
 });
 
@@ -44,12 +42,6 @@ const Queries = new GraphQLObjectType({
   name: 'Queries',
   description: 'The root Query type',
   fields: {
-    hello: {
-      type: GraphQLNonNull(GraphQLString),
-      resolve(_, args) {
-        return 'Hello world';
-      },
-    },
     deck: {
       type: DeckType,
       args: {
@@ -90,5 +82,4 @@ const schema = new GraphQLSchema({
 });
 
 // why export this one?
-exports.types = { DeckType };
 exports.schema = schema;

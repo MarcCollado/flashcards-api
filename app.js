@@ -8,17 +8,8 @@ const createError = require('http-errors');
 // graphQL
 const graphqlHTTP = require('express-graphql');
 const { schema } = require('./api/schema');
-
-// The root provides a resolver function for each API endpoint
-var root = {
-  hello: () => {
-    return 'Hello world!';
-  },
-};
-
 // express
 const app = express();
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -30,7 +21,6 @@ app.use(
   '/graphql',
   graphqlHTTP((req) => ({
     schema: schema,
-    rootValue: root,
     graphiql: true,
   })),
 );

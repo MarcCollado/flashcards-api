@@ -9,7 +9,12 @@ const {
   GraphQLInt,
 } = require('graphql');
 
-const { getDeck, getDecks, createDeck } = require('./resolvers/decks');
+const {
+  getDeck,
+  getDecks,
+  createDeck,
+  addQuizToDeck,
+} = require('./resolvers/decks');
 
 const QuizType = new GraphQLObjectType({
   name: 'Quiz',
@@ -17,6 +22,14 @@ const QuizType = new GraphQLObjectType({
     id: { type: GraphQLNonNull(GraphQLID) },
     question: { type: GraphQLNonNull(GraphQLString) },
     answer: { type: GraphQLNonNull(GraphQLString) },
+  },
+});
+
+const QuizInputType = new GraphQLInputObjectType({
+  name: 'QuizInput',
+  fields: {
+    question: { type: new GraphQLNonNull(GraphQLString) },
+    answer: { type: new GraphQLNonNull(GraphQLString) },
   },
 });
 
@@ -73,6 +86,16 @@ const Mutations = new GraphQLObjectType({
         return createDeck(args.deck);
       },
     },
+    addQuizToDeck: {
+      type: GraphQLNonNull(QuizType),
+      args: {
+        deckID: { type: new GraphQLNonNull(GraphQLID) },
+        quiz: { type: new GraphQLNonNull(QuizInputType) },
+      },
+      resolve(_, args) {
+        return addQuizToDeck(args.deckID, args.quiz);
+      },
+    },
   },
 });
 
@@ -81,5 +104,4 @@ const schema = new GraphQLSchema({
   mutation: Mutations,
 });
 
-// why export this one?
 exports.schema = schema;

@@ -38,13 +38,13 @@ async function addDeck(deck) {
   });
 }
 
-async function addQuizToDeck(id, newQuiz) {
+async function addCardToDeck(id, newCard) {
   return new Promise((resolve, reject) => {
-    Decks.findByIdAndUpdate(id, { $push: { quiz: newQuiz } }, (err, deck) => {
+    Decks.findByIdAndUpdate(id, { $push: { card: newCard } }, (err, deck) => {
       if (err) {
-        throw new Error(`Error adding quiz to the deck with id => ${id}`);
+        throw new Error(`Error adding card to the deck with id => ${id}`);
       }
-      return resolve(newQuiz);
+      return resolve(newCard);
     });
   });
 }
@@ -52,4 +52,4 @@ async function addQuizToDeck(id, newQuiz) {
 exports.getDeck = getDeck;
 exports.getDecks = getDecks;
 exports.addDeck = addDeck;
-exports.addQuizToDeck = addQuizToDeck;
+exports.addCardToDeck = addCardToDeck;

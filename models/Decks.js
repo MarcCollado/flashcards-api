@@ -7,7 +7,7 @@ const Decks = new Schema(
     // _id created by default
     title: String,
     coverImageUrl: String,
-    quiz: [{ question: String, answer: String }],
+    card: [{ question: String, answer: String }],
   },
   {
     timestamps: {

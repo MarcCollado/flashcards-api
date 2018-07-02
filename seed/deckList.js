@@ -3,7 +3,7 @@ module.exports = [
     title: 'Aviation history',
     coverImageUrl:
       'https://images.unsplash.com/photo-1464490997959-0c65eee1cc26',
-    quiz: [
+    card: [
       {
         question: "Which was Concorde's maximum speed?",
         answer:
@@ -23,7 +23,7 @@ module.exports = [
     title: 'Learn to code',
     coverImageUrl:
       'https://images.unsplash.com/photo-1461749280684-dccba630e2f6',
-    quiz: [
+    card: [
       {
         question: 'What is a closure?',
         answer:

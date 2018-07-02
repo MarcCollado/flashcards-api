@@ -13,11 +13,11 @@ const {
   getDeck,
   getDecks,
   addDeck,
-  addQuizToDeck,
+  addCardToDeck,
 } = require('./resolvers/decks');
 
-const QuizType = new GraphQLObjectType({
-  name: 'Quiz',
+const CardType = new GraphQLObjectType({
+  name: 'Card',
   fields: {
     id: { type: GraphQLID },
     question: { type: GraphQLNonNull(GraphQLString) },
@@ -25,8 +25,8 @@ const QuizType = new GraphQLObjectType({
   },
 });
 
-const QuizInputType = new GraphQLInputObjectType({
-  name: 'QuizInput',
+const CardInputType = new GraphQLInputObjectType({
+  name: 'CardInput',
   fields: {
     question: { type: new GraphQLNonNull(GraphQLString) },
     answer: { type: new GraphQLNonNull(GraphQLString) },
@@ -39,7 +39,7 @@ const DeckType = new GraphQLObjectType({
     id: { type: GraphQLID },
     title: { type: GraphQLNonNull(GraphQLString) },
     coverImageUrl: { type: GraphQLNonNull(GraphQLString) },
-    quiz: { type: GraphQLList(QuizType) },
+    card: { type: GraphQLList(CardType) },
   },
 });
 
@@ -86,14 +86,14 @@ const Mutations = new GraphQLObjectType({
         return addDeck(args.deck);
       },
     },
-    addQuizToDeck: {
-      type: GraphQLNonNull(QuizType),
+    addCardToDeck: {
+      type: GraphQLNonNull(CardType),
       args: {
         deckID: { type: new GraphQLNonNull(GraphQLID) },
-        quiz: { type: new GraphQLNonNull(QuizInputType) },
+        card: { type: new GraphQLNonNull(CardInputType) },
       },
       resolve(_, args) {
-        return addQuizToDeck(args.deckID, args.quiz);
+        return addCardToDeck(args.deckID, args.card);
       },
     },
   },

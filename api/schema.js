@@ -12,14 +12,14 @@ const {
 const {
   getDeck,
   getDecks,
-  createDeck,
+  addDeck,
   addQuizToDeck,
 } = require('./resolvers/decks');
 
 const QuizType = new GraphQLObjectType({
   name: 'Quiz',
   fields: {
-    id: { type: GraphQLNonNull(GraphQLID) },
+    id: { type: GraphQLID },
     question: { type: GraphQLNonNull(GraphQLString) },
     answer: { type: GraphQLNonNull(GraphQLString) },
   },
@@ -36,7 +36,7 @@ const QuizInputType = new GraphQLInputObjectType({
 const DeckType = new GraphQLObjectType({
   name: 'Deck',
   fields: {
-    id: { type: GraphQLNonNull(GraphQLID) },
+    id: { type: GraphQLID },
     title: { type: GraphQLNonNull(GraphQLString) },
     coverImageUrl: { type: GraphQLNonNull(GraphQLString) },
     quiz: { type: GraphQLList(QuizType) },
@@ -77,13 +77,13 @@ const Mutations = new GraphQLObjectType({
   name: 'Mutations',
   description: 'The root Mutation type',
   fields: {
-    createDeck: {
+    addDeck: {
       type: GraphQLNonNull(DeckType),
       args: {
         deck: { type: new GraphQLNonNull(DeckInputType) },
       },
       resolve(_, args) {
-        return createDeck(args.deck);
+        return addDeck(args.deck);
       },
     },
     addQuizToDeck: {

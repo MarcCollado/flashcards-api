@@ -22,7 +22,7 @@ async function getDecks() {
   });
 }
 
-async function createDeck(deck) {
+async function addDeck(deck) {
   return new Promise((resolve, reject) => {
     const { title, coverImageUrl } = deck;
     const newDeck = {
@@ -51,5 +51,5 @@ async function addQuizToDeck(id, newQuiz) {
 
 exports.getDeck = getDeck;
 exports.getDecks = getDecks;
-exports.createDeck = createDeck;
+exports.addDeck = addDeck;
 exports.addQuizToDeck = addQuizToDeck;

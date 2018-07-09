@@ -21,7 +21,7 @@ app.use(
   })),
 );
 
-app.listen(4000);
+app.listen(process.env.PORT || 4000);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

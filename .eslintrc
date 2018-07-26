@@ -4,7 +4,9 @@
     "browser": true,
     "node": true,
   },
-  "extends": ["airbnb"],
+  "extends": [
+    "airbnb"
+  ],
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaFeatures": {
@@ -16,11 +18,35 @@
   "rules": {
     "arrow-body-style": 1,
     "arrow-parens": 0,
-    "jsx-a11y/anchor-is-valid": [0, { "components": ["Link"], "specialLink": ["to"] }],
+    "jsx-a11y/anchor-is-valid": [
+      0,
+      {
+        "components": [
+          "Link"
+        ],
+        "specialLink": [
+          "to"
+        ]
+      }
+    ],
     "no-console": 1,
-    "no-unused-vars": [1, { "argsIgnorePattern": "res|next|^err" }],
-    "quotes": [2, "single", { "allowTemplateLiterals": true }],
+    "no-unused-vars": [
+      1,
+      {
+        "argsIgnorePattern": "res|next|^err"
+      }
+    ],
+    "quotes": [
+      2,
+      "single",
+      {
+        "allowTemplateLiterals": true
+      }
+    ],
     "react/jsx-filename-extension": 0,
   },
-  "plugins": ["html", "jsx-a11y"],
+  "plugins": [
+    "html",
+    "jsx-a11y"
+  ],
 }
